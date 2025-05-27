@@ -166,18 +166,22 @@ class EWorm():
 		# print(TV,DV,fs,ts) #DV[3]+fs,TV[3]+ts)        #TV,DV,
 		return (DV[3]+fs)/(TV[3]+ts)    #fs/ts    #
 
-	def OrdP(self):
-		NV = 0
-		NH = 0
-		for u,v in self.M:
-			if (round(abs(pos[u][0] - pos[v][0]), 1) == 0.0):
-				NV += 1
-			elif(round(abs(pos[u][1] - pos[v][1]), 1) == 0.0):
-				NH += 1
-		d = abs(NH - NV)*(2/(L**2))
-		return d
+	# def OrdP(self):
+	# 	NV = 0
+	# 	NH = 0
+	# 	for u,v in self.M:
+	# 		if (round(abs(pos[u][0] - pos[v][0]), 1) == 0.0):
+	# 			NV += 1
+	# 		elif(round(abs(pos[u][1] - pos[v][1]), 1) == 0.0):
+	# 			NH += 1
+	# 	d = abs(NH - NV)*(2/(L**2))
+	# 	return d
 
 	def worm_single(self,k,i,i0,visit):
+		''' 
+		Implement a single worm update until the test monomers recombine. At the end of a worm self.M (dimer state) is updated.
+		'''
+
 		Mr = []
 		count = 0
 		while k != i0:
@@ -188,7 +192,7 @@ class EWorm():
 			# print(obj.NoFP(PL_HC, []))
 			empE = list(self.g.edges(j))
 			Wei = {}
-			for u, v in empE:
+			for u, v in empE:      # calculate weights for each empty edge
 				w = np.exp(-self.V * self.weights(u, v) / self.T)
 				if ((u, v) == dim or (v, u) == dim):
 					rw = w
@@ -198,7 +202,9 @@ class EWorm():
 			S = sum(wei) + rw
 			n = random.uniform(0, 1)
 			#cn = [wei[0] / S, (wei[0] + wei[1]) / S, (wei[0] + wei[1] + wei[2]) / S]
-			cn = []
+
+			# Calculate probaility for each empty edge
+			cn = []                     
 			for kk in range(1,len(wei)+1):
 				su = 0
 				for kk1 in range(kk):
@@ -226,6 +232,8 @@ class EWorm():
 		return visit, Mr
 
 	def worm(self,sweeps):
+		'''Implement multiple sweeps until convergence. Each sweep consists of single worm updates that continue until most (>85%) of the nodes in the lattice are visited.'''
+
 		Mlist = []
 		while sweeps>0:
 			print(sweeps)
@@ -248,6 +256,8 @@ class EWorm():
 		return D,Nfp,self.M,Mlist
 
 	def MMC(self,Mm,st):
+		'''Calculate monomer-monomer correlations using a single worm update. After convergence, the histogram of test monomer separation distances yields the correlation function M(r, r_0).'''
+		
 		MR = []
 		VST = []
 		avgWL = 0
@@ -332,6 +342,7 @@ T2,Cv2 = pickle.load(open('../ModifiedTiling/FinalStates/CvNvsT_(k,R)=(10,10)_V=
 # T5,Cv5 = pickle.load(open('../ModifiedTiling/FinalStates/CvNvsT_(k,R)=(10,10)_V=%.2f.txt'% (30),'rb'))
 T = T2
 
+'''
 # T = 0.02
 # V,_ = pickle.load(open('../ModifiedTiling/FinalStates/NFPvsV_T=0.02.txt','rb'))
 # print(V)
@@ -372,7 +383,7 @@ for i in T[:0]: #V[:0]:
         pylab.show()
         # plt.show()
     #CN[i] = cn
-
+'''
 '''
 # T = [0.002, 0.02, 0.5, 1, 2,3.0, 3.7586206896551726,10.586206896551724, 11.344827586206897, 12.86206896551724, 13.620689655172413, 14.379310344827585, 15.137931034482758, 15.89655172413793, 16.655172413793103, 17.413793103448278, 18.17241379310345, 39.33333333333333, 42.0, 44.666666666666664, 47.33333333333333]
 # T = [2.7087179487179487, 3.861025641025641, 5.013333333333333, 5.397435897435897, 5.781538461538461,6.165641025641025, 6.549743589743589, 6.9338461538461535,7.317948717948718,9.238461538461538,12.31128205128205,26.736842105263158,35.684210526315795]
@@ -421,6 +432,7 @@ EC = []
 err = []
 swps = [100]*200
 
+''' ACROSS DIFFERENT TEMPERATURE RANGE '''
 for k in range(0):  #len(T)-1,-1,-2):
 	print(V,T[k])
 	D = []
