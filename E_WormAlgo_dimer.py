@@ -13,16 +13,18 @@ import pylab
 
 class EWorm():
 	def __init__(self,M,PL_HC,g,e,T,V):
-		self.M = M
-		self.PL_HC = PL_HC
-		self.g = g
+		self.M = M            # A perfect dimer matching
+		self.PL_HC = PL_HC    # List of Plaquettes
+		self.g = g            # Networkx graph for a latiice
 		self.bn,self.tn = nx.bipartite.sets(g)
 		self.e = e
 		self.Nodes = list(g.nodes())
-		self.T = T
-		self.V = V
+		self.T = T           # Temperature
+		self.V = V           # Potential
 
 	def plotG(self,s0,si,sj):
+		''' For Testing: plot lattice with a given dimer matching and test monomers at site {s0,s1,sj} during the worm algorithm workings.'''
+		
 		EC=[]
 		W=[]
 		for u,v in self.g.edges():
@@ -72,6 +74,11 @@ class EWorm():
 		# plt.show()
 
 	def NoFP(self, pl, mm):
+		''' 
+  		mm: current dimer edge
+  		Calculate number of flippable plaquttes in a given list of plaquettes 'pl', when there is a dimer on 'mm'.
+  		Return number of flippable plaquttes (c) and list of flippable plaquttes (fpl)
+    		'''
 		c = 0
 		fpl = []
 		for i in pl:
@@ -85,6 +92,10 @@ class EWorm():
 		return c,fpl
 
 	def weights(self,u,v):
+		'''
+  		Calculate the number of plaquettes attached to the current dimer edge (u, v) and store the result in 'pl'. Return number of flippable plaquttes in 'pl'.
+    		'''
+		
 		pl = []
 		for i in self.PL_HC:
 			if((u,v) in i or (v,u) in i):
@@ -103,6 +114,7 @@ class EWorm():
 		return self.NoFP(pl,[u,v])[0]
 
 	def InM(self, u):
+		'''Returns whether an edge contains a dimer or not.'''
 		for p,q in self.M:
 			if (p == u):
 				return (p,q),q
@@ -118,6 +130,15 @@ class EWorm():
 		return False
 
 	def OrdP_MP(self,PL_BP,PL_HC):
+		'''
+   		Only for the Trivalent Penrose case:
+    		Calculates the number of flippable plaquettes corresponding to each vertex degree 
+    		in the dual standard Penrose lattice separately. This helps determine which plaquette 
+    		type is most prevalent in the columnar state.
+    
+    		Also calculates the number of flippable rectangular plaquettes separately.
+		'''
+
 		NA = 0
 		NB = 0
 		bpp = []
