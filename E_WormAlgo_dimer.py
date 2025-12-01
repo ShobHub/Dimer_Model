@@ -78,7 +78,7 @@ class EWorm():
   		mm: current dimer edge
   		Calculate number of flippable plaquttes in a given list of plaquettes 'pl', when there is a dimer on 'mm'.
   		Return number of flippable plaquttes (c) and list of flippable plaquttes (fpl)
-    		'''
+    	'''
 		c = 0
 		fpl = []
 		for i in pl:
@@ -94,8 +94,7 @@ class EWorm():
 	def weights(self,u,v):
 		'''
   		Calculate the number of plaquettes attached to the current dimer edge (u, v) and store the result in 'pl'. Return number of flippable plaquttes in 'pl'.
-    		'''
-		
+    	'''
 		pl = []
 		for i in self.PL_HC:
 			if((u,v) in i or (v,u) in i):
@@ -135,10 +134,8 @@ class EWorm():
     		Calculates the number of flippable plaquettes corresponding to each vertex degree 
     		in the dual standard Penrose lattice separately. This helps determine which plaquette 
     		type is most prevalent in the columnar state.
-    
-    		Also calculates the number of flippable rectangular plaquettes separately.
+    	Also calculates the number of flippable rectangular plaquettes separately.
 		'''
-
 		NA = 0
 		NB = 0
 		bpp = []
@@ -181,13 +178,11 @@ class EWorm():
 		''' 
 		Implement a single worm update until the test monomers recombine. At the end of a worm self.M (dimer state) is updated.
 		'''
-
 		Mr = []
 		count = 0
 		while k != i0:
 			dim, j = self.InM(i)
 			self.M.remove(dim)
-
 			# self.plotG(i0,i,j)
 			# print(obj.NoFP(PL_HC, []))
 			empE = list(self.g.edges(j))
@@ -233,7 +228,6 @@ class EWorm():
 
 	def worm(self,sweeps):
 		'''Implement multiple sweeps until convergence. Each sweep consists of single worm updates that continue until most (>85%) of the nodes in the lattice are visited.'''
-
 		Mlist = []
 		while sweeps>0:
 			print(sweeps)
@@ -257,7 +251,6 @@ class EWorm():
 
 	def MMC(self,Mm,st):
 		'''Calculate monomer-monomer correlations using a single worm update. After convergence, the histogram of test monomer separation distances yields the correlation function M(r, r_0).'''
-		
 		MR = []
 		VST = []
 		avgWL = 0
@@ -293,8 +286,9 @@ class EWorm():
 		MR = dict(sorted(MR.items()))
 		return VST,MR
 
-g = pickle.load(open('../3DegLattices/SqOct/SqOct12_OBC.txt','rb'))   #Hexa/Hexa24_PBC.txt','rb'))
-pos = pickle.load(open('../3DegLattices/SqOct/Pos_SqOct12_OBC.txt','rb'))  #Hexa/Pos_Hexa24_PBC.txt','rb'))
+## LOAD FILES
+g = pickle.load(open('../3DegLattices/SqOct/SqOct12_OBC.txt','rb'))   #Hexa/Hexa24_PBC.txt','rb'))   # NetworkX graphs
+pos = pickle.load(open('../3DegLattices/SqOct/Pos_SqOct12_OBC.txt','rb'))  #Hexa/Pos_Hexa24_PBC.txt','rb'))   # Node positions Dictionary
 pos = {u:np.array(v) for u,v in pos.items()}
 PL_HC = pickle.load(open('../3DegLattices/SqOct/Plaqs_SqOct12_OBC.txt','rb'))  #Hexa/Plaqs_Hexa24_PBC.txt','rb'))
 
