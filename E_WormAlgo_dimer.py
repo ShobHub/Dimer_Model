@@ -290,7 +290,7 @@ class EWorm():
 g = pickle.load(open('../3DegLattices/SqOct/SqOct12_OBC.txt','rb'))   #Hexa/Hexa24_PBC.txt','rb'))   # NetworkX graphs
 pos = pickle.load(open('../3DegLattices/SqOct/Pos_SqOct12_OBC.txt','rb'))  #Hexa/Pos_Hexa24_PBC.txt','rb'))   # Node positions Dictionary
 pos = {u:np.array(v) for u,v in pos.items()}
-PL_HC = pickle.load(open('../3DegLattices/SqOct/Plaqs_SqOct12_OBC.txt','rb'))  #Hexa/Plaqs_Hexa24_PBC.txt','rb'))
+PL_HC = pickle.load(open('../3DegLattices/SqOct/Plaqs_SqOct12_OBC.txt','rb'))  #Hexa/Plaqs_Hexa24_PBC.txt','rb'))  #Plaquette List 
 
 # G = pickle.load(open('../Cen_Tiling_(k,R)=(10,10).txt','rb'))
 # Pos = pickle.load(open('../Cen_Pos_(k,R)=(10,10).txt','rb'))
@@ -426,11 +426,11 @@ EC = []
 err = []
 swps = [100]*200
 
-''' ACROSS DIFFERENT TEMPERATURE RANGE '''
+''' ACROSS DIFFERENT TEMPERATURE RANGE - FINDING GROUND STATES'''
 for k in range(0):  #len(T)-1,-1,-2):
 	print(V,T[k])
-	D = []
-	Nfp = []
+	D = []    # Order Parameter
+	Nfp = []  # Number of flippable plaquette
 	# ME = pickle.load(open('../3DegLattices/Hexa/FS/FS_hexa24_T=%.2f_V=%.2f.txt'%(T[k],V), 'rb'))
 	# ME = pickle.load(open('../RandomG/FS/FS_L=200_T=%.2f_V=%.2f.txt'%(0.53,-10), 'rb'))
 	obj = EWorm(ME,PL_HC,g,e,T=T[k],V=V)
@@ -473,6 +473,14 @@ print(err)
 print(Cv)
 print(EC)
 
+
+
+
+
+
+
+
+''' PLOTTING FOR THESIS '''
 # T, Nfpt,err = pickle.load(open('../3DegLattices/Hexa/NFPvsT_hexa24_V=%.2f.txt' % (V),'rb'))
 # T,Cv = pickle.load(open('../3DegLattices/Hexa/CvNvsT_hexa24_V=%.2f.txt' % (V),'rb'))
 # T,EC = pickle.load(open('../3DegLattices/Hexa/ECvsT_hexa24_V=%.2f.txt' % (V),'rb'))
@@ -589,8 +597,13 @@ plt.tick_params(axis='y', labelsize=260,length=70, width=15)
 plt.savefig('../../papers/RandomFieldTheory/CVvsT_thesis_1.pdf')  #Mr_SqOct_thesis.pdf')
 # plt.show()
 
-dfdfgd
 
+
+
+
+
+
+'''
 T,Nfpt = pickle.load(open('../ModifiedTiling/FinalStates/NFPvsV_(k,R)=(10,10)_V=%.2f.txt'% (-0.2),'rb'))    #OPvsV_T=0.02_ModT_(k,R)=(10,10)_1.txt','rb'))
 
 
@@ -622,3 +635,4 @@ for i in T:
 # Nfpt = [343.0969030969031, 343.72327672327674, 343.9320679320679, 343.968031968032, 343.992007992008, 344.0, 344.0, 344.0, 344.0][::-1] + Nfpt[9:]
 # Cv = [0.01868371381494571, 0.009737911098210983, 0.0031966669265480648, 0.0022412387350075305, 0.0008362582563365103, 0.0, 0.0, 0.0, 0.0][::-1] + Cv[9:]
 # EC = [0.6666588104938718, 0.6666635379853894, 0.6666659100828716, 0.6666662965435596, 0.6666665775887952, 0.6666666666666667, 0.6666666666666667, 0.6666666666666667,0.6666666666666667][::-1] + EC[9:]
+'''
